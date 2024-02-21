@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -30,7 +30,7 @@ msg_ok() { echo -e "${BFR} ${CM} ${GN}$1${CL}"; }
 msg_error() { echo -e "${BFR} ${CROSS} ${RD}$1${CL}"; }
 
 header_info
-current_microcode=$(journalctl -k | grep -E "microcode: microcode" | awk -F 'microcode: microcode updated early to revision |, date = ' '{print $2 ", date = " $3}')
+current_microcode=$(journalctl -k | grep -oP "microcode: updated early: [^ ]+ -> \K[^,]+, date = [^ ]+" | head -n 1)
 [ -z "$current_microcode" ] && current_microcode="Not found."
 
 intel() {
@@ -46,16 +46,16 @@ intel() {
   intel_microcode=$(curl -fsSL "https://ftp.debian.org/debian/pool/non-free-firmware/i/intel-microcode//" | grep -o 'href="[^"]*amd64.deb"' | sed 's/href="//;s/"//')
   [ -z "$intel_microcode" ] && { whiptail --backtitle "Proxmox VE Helper Scripts" --title "No Microcode Found" --msgbox "It appears there were no microcode packages found\n Try again later." 10 68; msg_info "Exiting"; sleep 1; msg_ok "Done"; exit; }
 
-  CTID_MENU=()
+  MICROCODE_MENU=()
   MSG_MAX_LENGTH=0
 
   while read -r TAG ITEM; do
     OFFSET=2
     (( ${#ITEM} + OFFSET > MSG_MAX_LENGTH )) && MSG_MAX_LENGTH=${#ITEM}+OFFSET
-    CTID_MENU+=("$TAG" "$ITEM " "OFF")
+    MICROCODE_MENU+=("$TAG" "$ITEM " "OFF")
   done < <(echo "$intel_microcode")
 
-  microcode=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Current Microcode revision:${current_microcode}" --radiolist "\nSelect a microcode package to install:\n" 16 $((MSG_MAX_LENGTH + 58)) 6 "${CTID_MENU[@]}" 3>&1 1>&2 2>&3 | tr -d '"') || exit
+  microcode=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Current Microcode revision:${current_microcode}" --radiolist "\nSelect a microcode package to install:\n" 16 $((MSG_MAX_LENGTH + 58)) 6 "${MICROCODE_MENU[@]}" 3>&1 1>&2 2>&3 | tr -d '"') || exit
 
   [ -z "$microcode" ] && { whiptail --backtitle "Proxmox VE Helper Scripts" --title "No Microcode Selected" --msgbox "It appears that no microcode packages were selected" 10 68; msg_info "Exiting"; sleep 1; msg_ok "Done"; exit; }
 
@@ -78,16 +78,16 @@ amd() {
 
   [ -z "$amd_microcode" ] && { whiptail --backtitle "Proxmox VE Helper Scripts" --title "No Microcode Found" --msgbox "It appears there were no microcode packages found\n Try again later." 10 68; msg_info "Exiting"; sleep 1; msg_ok "Done"; exit; }
 
-  CTID_MENU=()
+  MICROCODE_MENU=()
   MSG_MAX_LENGTH=0
 
   while read -r TAG ITEM; do
     OFFSET=2
     (( ${#ITEM} + OFFSET > MSG_MAX_LENGTH )) && MSG_MAX_LENGTH=${#ITEM}+OFFSET
-    CTID_MENU+=("$TAG" "$ITEM " "OFF")
+    MICROCODE_MENU+=("$TAG" "$ITEM " "OFF")
   done < <(echo "$amd_microcode")
 
-  microcode=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Current Microcode revision:${current_microcode}" --radiolist "\nSelect a microcode package to install:\n" 16 $((MSG_MAX_LENGTH + 58)) 6 "${CTID_MENU[@]}" 3>&1 1>&2 2>&3 | tr -d '"') || exit
+  microcode=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "Current Microcode revision:${current_microcode}" --radiolist "\nSelect a microcode package to install:\n" 16 $((MSG_MAX_LENGTH + 58)) 6 "${MICROCODE_MENU[@]}" 3>&1 1>&2 2>&3 | tr -d '"') || exit
 
   [ -z "$microcode" ] && { whiptail --backtitle "Proxmox VE Helper Scripts" --title "No Microcode Selected" --msgbox "It appears that no microcode packages were selected" 10 68; msg_info "Exiting"; sleep 1; msg_ok "Done"; exit; }
 

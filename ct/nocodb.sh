@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 source <(curl -s https://raw.githubusercontent.com/tteck/Proxmox/main/misc/build.func)
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -23,7 +23,7 @@ var_disk="4"
 var_cpu="1"
 var_ram="1024"
 var_os="debian"
-var_version="11"
+var_version="12"
 variables
 color
 catch_errors
@@ -39,6 +39,8 @@ function default_settings() {
   BRG="vmbr0"
   NET="dhcp"
   GATE=""
+  APT_CACHER=""
+  APT_CACHER_IP=""
   DISABLEIP6="no"
   MTU=""
   SD=""
@@ -54,10 +56,12 @@ function update_script() {
 header_info
 if [[ ! -f /etc/systemd/system/nocodb.service ]]; then msg_error "No ${APP} Installation Found!"; exit; fi
 msg_info "Updating ${APP}"
+systemctl stop nocodb.service
 cd /opt/nocodb
-npm uninstall -s --save nocodb &>/dev/null
-npm install -s --save nocodb &>/dev/null
-systemctl restart nocodb.service
+rm -rf nocodb
+curl -s http://get.nocodb.com/linux-x64 -o nocodb -L
+chmod +x nocodb
+systemctl start nocodb.service
 msg_ok "Updated Successfully"
 exit
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -15,7 +15,7 @@ function header_info {
 EOF
 }
 
-set -eEuo pipefail
+set -euo pipefail
 shopt -s expand_aliases
 alias die='EXIT=$? LINE=$LINENO error_exit'
 trap die ERR
@@ -57,15 +57,16 @@ if systemctl is-active -q ping-instances.service; then
 fi
 header_info
 whiptail --backtitle "Proxmox VE Helper Scripts" --title "TurnKey LXCs" --yesno "This will allow for the creation of one of the many TurnKey LXC Containers. Proceed?" 10 68 || exit
-CTID_MENU=()
+TURNKEY_MENU=()
 MSG_MAX_LENGTH=0
 while read -r TAG ITEM; do
   OFFSET=2
   ((${#ITEM} + OFFSET > MSG_MAX_LENGTH)) && MSG_MAX_LENGTH=${#ITEM}+OFFSET
-  CTID_MENU+=("$TAG" "$ITEM " "OFF")
+  TURNKEY_MENU+=("$TAG" "$ITEM " "OFF")
 done < <(
   cat <<EOF
 ansible Ansible
+bookstack BookStack
 core Core
 faveo-helpdesk Faveo Helpdesk
 fileserver File Server
@@ -87,7 +88,7 @@ wordpress Wordpress
 zoneminder ZoneMinder
 EOF
 )
-turnkey=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "TurnKey LXCs" --radiolist "\nSelect a TurnKey LXC to create:\n" 16 $((MSG_MAX_LENGTH + 58)) 6 "${CTID_MENU[@]}" 3>&1 1>&2 2>&3 | tr -d '"') || exit
+turnkey=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "TurnKey LXCs" --radiolist "\nSelect a TurnKey LXC to create:\n" 16 $((MSG_MAX_LENGTH + 58)) 6 "${TURNKEY_MENU[@]}" 3>&1 1>&2 2>&3 | tr -d '"') || exit
 [ -z "$turnkey" ] && {
   whiptail --backtitle "Proxmox VE Helper Scripts" --title "No TurnKey LXC Selected" --msgbox "It appears that no TurnKey LXC container was selected" 10 68
   msg "Done"
@@ -97,7 +98,6 @@ turnkey=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "TurnKey LXCs
 # Setup script environment
 PASS="$(openssl rand -base64 8)"
 CTID=$(pvesh get /cluster/nextid)
-TEMPLATE_SEARCH="debian-11-turnkey-${turnkey}"
 PCT_OPTIONS="
     -features keyctl=1,nesting=1
     -hostname turnkey-${turnkey}
@@ -175,8 +175,8 @@ msg "Updating LXC template list..."
 pveam update >/dev/null
 
 # Get LXC template string
-mapfile -t TEMPLATES < <(pveam available -section turnkeylinux | sed -n "s/.*\($TEMPLATE_SEARCH.*\)/\1/p" | sort -t - -k 2 -V)
-[ ${#TEMPLATES[@]} -gt 0 ] || die "Unable to find a template when searching for '$TEMPLATE_SEARCH'."
+mapfile -t TEMPLATES < <(pveam available -section turnkeylinux | awk -v turnkey="${turnkey}" '$0 ~ turnkey {print $2}' | sort -t - -k 2 -V)
+[ ${#TEMPLATES[@]} -gt 0 ] || die "Unable to find a template when searching for '${turnkey}'."
 TEMPLATE="${TEMPLATES[-1]}"
 
 # Download LXC template
@@ -204,7 +204,7 @@ pct start "$CTID"
 sleep 5
 
 # Get container IP
-set +e
+set +euo pipefail # Turn off error checking
 max_attempts=5
 attempt=1
 IP=""
@@ -224,7 +224,6 @@ if [[ -z $IP ]]; then
   IP="NOT FOUND"
 fi
 
-set -e
 # Start Proxmox VE Monitor-All if available
 if [[ -f /etc/systemd/system/ping-instances.service ]]; then
   systemctl start ping-instances.service

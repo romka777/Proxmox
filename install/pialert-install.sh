@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -19,12 +19,14 @@ $STD apt-get -y install \
   mc \
   curl \
   apt-utils \
+  avahi-utils \
   lighttpd \
   sqlite3 \
   mmdb-bin \
   arp-scan \
   dnsutils \
   net-tools \
+  nbtscan \
   libwww-perl \
   nmap \
   zip \
@@ -38,6 +40,7 @@ $STD apt-get -y install \
   php-cgi \
   php-fpm \
   php-curl \
+  php-xml \
   php-sqlite3
 $STD lighttpd-enable-mod fastcgi-php
 service lighttpd force-reload
@@ -50,6 +53,7 @@ $STD apt-get -y install \
 $STD pip3 install mac-vendor-lookup
 $STD pip3 install fritzconnection
 $STD pip3 install cryptography
+$STD pip3 install pyunifi
 msg_ok "Installed Python Dependencies"
 
 msg_info "Installing Pi.Alert"

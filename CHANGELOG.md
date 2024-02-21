@@ -1,8 +1,317 @@
-<a href="https://tteck.github.io/Proxmox/"><img src="https://github-readme-stats-git-masterrstaa-rickstaa.vercel.app/api?username=tteck&theme=blue-green" height="130"/></a>
-# Change Log
-**All notable changes to this project will be documented in this file.**<br>
+<div align="center">
+  <a href="#">
+    <img src="https://raw.githubusercontent.com/tteck/Proxmox/main/misc/images/logo.png" height="100px" />
+ </a>
+</div>
+<h1 align="center">Change Log</h1>
+
+<h3 align="center">All notable changes to this project will be documented in this file.</h3>
 
 - All LXC instances created using this repository come pre-installed with Midnight Commander, which is a command-line tool (`mc`) that offers a user-friendly file and directory management interface for the terminal environment.
+- 🚨 **The scripts in the repository will no longer provide support for Proxmox VE 7 starting from July 2024 (scripts will not execute on PVE7). Subsequent <a href='https://forum.proxmox.com/threads/proxmox-ve-support-lifecycle.35755/' target='_blank' rel='noopener noreferrer'>Proxmox VE - Support Lifecycle</a>**
+
+## 2024-02-19
+
+### Changed
+
+- **PairDrop LXC**
+  - Removed from the website ([more info](https://github.com/tteck/Proxmox/discussions/2516))
+
+## 2024-02-16
+
+### Changed
+
+- **Proxmox VE LXC Filesystem Trim**
+  - NEW Script ([more info](https://github.com/tteck/Proxmox/discussions/2505#discussion-6226037))
+
+## 2024-02-11
+
+### Changed
+
+- **HiveMQ CE LXC**
+  - NEW Script
+- **Apache-CouchDB LXC**
+  - NEW Script
+
+## 2024-02-06
+
+### Changed
+
+- **All Scripts**
+  - The scripts will only work with PVE7 Version 7.4-13 or later, or PVE8 Version 8.1.1 or later.
+
+## 2024-02-05
+
+### Changed
+
+- **Gokapi LXC**
+  - NEW Script
+- **Nginx Proxy Manager LXC**
+  - Option to install v2.10.4
+
+## 2024-02-04
+
+### Changed
+
+- **Pi-hole LXC**
+  - Option to add Unbound
+
+## 2024-02-02
+
+### Changed
+
+- **Readeck LXC**
+  - NEW Script
+
+## 2024-01-25
+
+### Changed
+
+- **PairDrop LXC**
+  - NEW Script
+
+## 2024-01-20
+
+### Changed
+
+- **Apache-Cassandra LXC**
+  - NEW Script
+- **Redis LXC**
+  - NEW Script
+
+## 2024-01-17
+
+### Changed
+
+- **ntfy LXC**
+  - NEW Script
+- **HyperHDR LXC**
+  - NEW Script
+
+## 2024-01-16
+
+### Changed
+
+- **Website Improvements**
+  - Refine and correct pointers.
+  - Change hover colors to intuitively indicate categories/items.
+  - Implement opening links in new tabs for better navigation.
+  - Enhance the Copy button to better indicate that the command has been successfully copied.
+  - Introduce a Clear Search button.
+  - While not directly related to the website, it's worth mentioning that the logo in newly created LXC notes now serves as a link to the website, conveniently opening in a new tab.
+
+## 2024-01-12
+
+### Changed
+
+- **Apt-Cacher-NG LXC**
+  - NEW Script
+- **New Feature**
+  - The option to utilize Apt-Cacher-NG (Advanced settings) when creating LXCs. The added functionality is expected to decrease bandwidth usage and expedite package installation and updates. https://github.com/tteck/Proxmox/discussions/2332
+
+## 2024-01-09
+
+### Changed
+
+- **Verbose mode**
+  - Only entries with `$STD` will be shown
+
+## 2024-01-07
+
+### Changed
+
+- **Stirling-PDF LXC**
+  - NEW Script
+- **SFTPGo LXC**
+  - NEW Script
+
+## 2024-01-04
+
+### Changed
+
+- **CommaFeed LXC**
+  - NEW Script
+
+## 2024-01-03
+
+### Changed
+
+- **Sonarr LXC**
+  - Breaking Change
+  - Complete recode
+  - https://github.com/tteck/Proxmox/discussions/1738#discussioncomment-8005107
+
+## 2024-01-01
+
+### Changed
+
+- **Gotify LXC**
+  - NEW Script
+
+## 2023-12-19
+
+### Changed
+
+- **Proxmox VE Netdata**
+  - NEW Script
+
+## 2023-12-10
+
+### Changed
+
+- **Homarr LXC**
+  - Removed, again.
+
+## 2023-12-02
+
+### Changed
+
+- **Runtipi LXC**
+  - NEW Script
+
+## 2023-12-01
+
+### Changed
+
+- **Mikrotik RouterOS VM**
+  - Now Mikrotik RouterOS CHR VM
+  - code refactoring
+  - update to CHR
+  - thanks to @NiccyB
+- **Channels DVR Server LXC**
+  - NEW Script
+
+## 2023-11-19
+
+### Changed
+
+- **Dockge LXC**
+  - NEW Script
+
+## 2023-11-18
+
+### Changed
+
+- **Ubuntu 22.04 VM**
+  - NEW Script
+
+## 2023-11-14
+
+### Changed
+
+- **TurnKey Nextcloud VM**
+  - NEW Script
+- **TurnKey ownCloud VM**
+  - NEW Script
+
+## 2023-11-11
+
+### Changed
+
+- **Homarr LXC**
+  - Returns with v0.14.0 (The authentication update).
+
+## 2023-11-9
+
+### Changed
+
+- **AgentDVR LXC**
+  - NEW Script
+
+## 2023-11-8
+
+### Changed
+
+- **Linkwarden LXC**
+  - NEW Script
+
+## 2023-11-2
+
+### Changed
+
+- **PhotoPrism LXC**
+  - Transitioned to PhotoPrism's latest installation package, featuring Linux binaries.
+
+## 2023-11-1
+
+### Changed
+
+- **Owncast LXC**
+  - NEW Script
+
+## 2023-10-31
+
+### Changed
+
+- **Debian 12 VM**
+  - NEW Script
+
+## 2023-10-29
+
+### Changed
+
+- **Unmanic LXC**
+  - NEW Script
+
+## 2023-10-27
+
+### Changed
+
+- **Webmin**
+  - A full code overhaul.
+
+## 2023-10-15
+
+### Changed
+
+- **TasmoAdmin LXC**
+  - NEW Script
+
+## 2023-10-14
+
+### Changed
+
+- **Sonarr LXC**
+  - Include an option to install v4 (experimental)
+
+## 2023-10-11
+
+### Changed
+
+- **Proxmox VE CPU Scaling Governor**
+  - A full code overhaul.
+  - Include an option to configure a crontab for ensuring that the CPU Scaling Governor configuration persists across reboots.
+
+## 2023-10-08
+
+### Changed
+
+- **Proxmox VE LXC Updater**
+  - Now displays which containers require a reboot.
+- **File Browser**
+  - Uninstall by re-executing the script
+  - Option to use No Authentication
+
+## 2023-10-05
+
+### Changed
+
+- **Pingvin Share LXC**
+  - NEW Script
+
+## 2023-09-30
+
+### Changed
+
+- **All Templates**
+  - NEW Script
+
+## 2023-09-28
+
+### Changed
+
+- **Alpine Nextcloud Hub LXC**
+  - NEW Script (Thanks to @nicedevil007)
 
 ## 2023-09-14
 

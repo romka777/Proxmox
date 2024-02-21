@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 source <(curl -s https://raw.githubusercontent.com/tteck/Proxmox/main/misc/build.func)
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -8,28 +8,28 @@ source <(curl -s https://raw.githubusercontent.com/tteck/Proxmox/main/misc/build
 function header_info {
 clear
 cat <<"EOF"
-    ____                            
-   / __ \___ _   ____  ______  ____ 
-  / / / / _ \ | / / / / / __ `/ __ \
- / /_/ /  __/ |/ / /_/ / /_/ / / / /
-/_____/\___/|___/\__,_/\__,_/_/ /_/ 
-                                    
+   __  __                            _
+  / / / /___  ____ ___  ____ _____  (_)____
+ / / / / __ \/ __ `__ \/ __ `/ __ \/ / ___/
+/ /_/ / / / / / / / / / /_/ / / / / / /__
+\____/_/ /_/_/ /_/ /_/\__,_/_/ /_/_/\___/
+
 EOF
 }
 header_info
 echo -e "Loading..."
-APP="Devuan"
-var_disk="2"
-var_cpu="1"
-var_ram="512"
-var_os="devuan"
-var_version="4.0"
+APP="Unmanic"
+var_disk="4"
+var_cpu="2"
+var_ram="2048"
+var_os="debian"
+var_version="12"
 variables
 color
 catch_errors
 
 function default_settings() {
-  CT_TYPE="1"
+  CT_TYPE="0"
   PW=""
   CT_ID=$NEXTID
   HN=$NSAPP
@@ -39,6 +39,8 @@ function default_settings() {
   BRG="vmbr0"
   NET="dhcp"
   GATE=""
+  APT_CACHER=""
+  APT_CACHER_IP=""
   DISABLEIP6="no"
   MTU=""
   SD=""
@@ -52,9 +54,9 @@ function default_settings() {
 
 function update_script() {
 header_info
-if [[ ! -d /var ]]; then msg_error "No ${APP} Installation Found!"; exit; fi
+if [[ ! -f /etc/systemd/system/unmanic.service ]]; then msg_error "No ${APP} Installation Found!"; exit; fi
 msg_info "Updating $APP LXC"
-apt-get update &>/dev/null
+pip3 install -U unmanic &>/dev/null
 apt-get -y upgrade &>/dev/null
 msg_ok "Updated $APP LXC"
 exit
@@ -65,3 +67,5 @@ build_container
 description
 
 msg_ok "Completed Successfully!\n"
+echo -e "${APP} should be reachable by going to the following URL.
+         ${BL}http://${IP}:8888${CL} \n"

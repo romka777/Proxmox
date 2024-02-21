@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2021-2023 tteck
+# Copyright (c) 2021-2024 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
@@ -17,6 +17,7 @@ msg_info "Installing Dependencies"
 $STD apt-get install -y curl
 $STD apt-get install -y sudo
 $STD apt-get install -y mc
+$STD apt-get install -y python3-libtorrent
 msg_ok "Installed Dependencies"
 
 msg_info "Updating Python3"
@@ -28,7 +29,6 @@ msg_ok "Updated Python3"
 
 msg_info "Installing Deluge"
 $STD pip install deluge[all]
-$STD pip install lbry-libtorrent
 msg_ok "Installed Deluge"
 
 msg_info "Creating Service"
